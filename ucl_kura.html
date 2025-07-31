@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>UEFA Şampiyonlar Ligi 2025/26 Kura Simülatörü</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: url('backgroundDark01M.png') center/cover no-repeat, linear-gradient(135deg,#082b66 0%, #154781 60%, #48c0e1 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .main-container {
+      max-width: 1200px;
+      margin: 42px auto 0 auto;
+      padding: 44px 8px 40px 8px;
+      background: rgba(24,30,52,0.85);
+      border-radius: 20px;
+      box-shadow: 0 10px 48px 0 #0a223740;
+      position: relative;
+    }
+    .cl-logo-top {
+      display: block;
+      margin: 0 auto 18px auto;
+      width: 96px; height: 96px;
+      object-fit: contain;
+      background: none;
+    }
+    h1 {
+      font-size: 2.15em;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 4px;
+      text-shadow: 0 2px 16px #0faed850;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 1.17em;
+      margin-bottom: 32px;
+      color: #92ffe7;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+    .pots-table-row {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      margin-bottom: 38px;
+      width: 100%;
+      align-items: flex-start;
+    }
+    .pot-box {
+      min-width: 190px;
+      padding: 18px 18px 14px 18px;
+      border-radius: 18px;
+      background: rgba(8,29,62,0.93);
+      box-shadow: 0 1px 18px #30ddf616;
+      margin: 0;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .pot-title {
+      font-size: 1.1em;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #5af7dc;
+      letter-spacing: 0.02em;
+      text-align: left;
+    }
+    .pot-team {
+      font-size: 1.09em;
+      padding: 5px 0 2px 0;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, opacity 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: 9px;
+      background: none;
+      color: #fff;
+      font-weight: 500;
+      opacity: 1;
+      width: 100%;
+      text-align: left;
+      justify-content: flex-start;
+    }
+    .pot-team.faded {
+      opacity: 0.32;
+      color: #72fff0;
+      text-decoration: line-through;
+      pointer-events: none;
+    }
+    .pot-team.selected {
+      background: #242e49;
+      color: #5af7dc;
+      font-weight: 600;
+    }
+    .pot-logo {
+      width: 22px; height: 22px;
+      object-fit: contain;
+      background: none;
+      margin-right: 6px;
+      border-radius: 0;
+      vertical-align: middle;
+      display: inline-block;
+    }
+    .buttons-row {
+      display: flex;
+      flex-direction: row;
+      gap: 14px;
+      justify-content: center;
+      align-items: center;
+      margin: 28px 0 28px 0;
+    }
+    .draw-btn, .reset-btn, .home-btn {
+      padding: 11px 28px;
+      font-size: 1.1em;
+      font-weight: 600;
+      border-radius: 12px;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      margin: 0;
+      background: #5af7dc;
+      color: #101d29;
+      box-shadow: 0 2px 18px #19ffe850;
+      transition: background 0.15s, color 0.13s, box-shadow 0.18s;
+    }
+    .draw-btn:active, .reset-btn:active, .home-btn:active {
+      background: #28e7b9;
+      color: #181f2f;
+    }
+    .draw-btn:disabled, .reset-btn:disabled {
+      opacity: 0.44;
+      cursor: not-allowed;
+    }
+    #matches {
+      width: 100%;
+      margin: 36px auto 0 auto;
+      background: rgba(0,30,60,0.92);
+      border-radius: 18px;
+      box-shadow: 0 4px 30px #08ded633;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .matches-list {
+      list-style: none;
+      margin: 0 auto;
+      padding: 20px 0 20px 0;
+      width: 100%;
+    }
+    .matches-group-title {
+      font-size: 1.13em;
+      font-weight: 600;
+      color: #5af7dc;
+      margin: 24px 0 8px 0;
+      text-align: center;
+    }
+    .match-bubble {
+      background: rgba(30,210,210,0.11);
+      color: #fff;
+      border-radius: 18px;
+      padding: 14px 38px;
+      font-size: 1.12em;
+      font-weight: 500;
+      margin-bottom: 17px;
+      box-shadow: 0 1px 14px #09f9d626;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(32px) scale(0.95);
+      transition: opacity 0.52s, transform 0.44s;
+      width: fit-content;
+      min-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+    .match-bubble.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1.0);
+    }
+    @media (max-width: 900px) {
+      .main-container { padding: 16px 0 24px 0; }
+      .pots-table-row { gap: 6vw; }
+      .pot-box { min-width: 110px; font-size: 0.92em; }
+    }
+    @media (max-width: 640px) {
+      .main-container { margin-top: 3vw; }
+      .pots-table-row { flex-direction: column; gap: 16px;}
+      .pot-box { min-width: 0; width: 98vw; }
+      #matches { min-height: 300px; }
+      .matches-list { max-width: 96vw;}
+      .match-bubble { padding: 10px 10px; min-width: 70vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <img src="CL_logo.png" class="cl-logo-top" alt="UCL Logo" />
+    <h1>UEFA Şampiyonlar Ligi 2025/26 Kura Simülatörü</h1>
+    <div class="subtitle">(Kura simüle etmek istediğiniz takımı tıklayarak seçin)</div>
+    <div id="pots-table" style="margin-bottom:38px;"></div>
+    <div class="buttons-row">
+      <button class="draw-btn" id="drawBtn">KURA ÇEK</button>
+      <button class="reset-btn" id="resetBtn">SIFIRLA</button>
+      <button class="home-btn" id="homeBtn">ANA SAYFA</button>
+    </div>
+    <div id="matches"></div>
+  </div>
+  <script>
+    const logos = {
+      "PSG": "UCL/PSG.png",
+      "Real Madrid": "UCL/real-madrid.png",
+      "Manchester City": "UCL/city.png",
+      "Bayern Münih": "UCL/bayern.png",
+      "Liverpool": "UCL/liverpool.png",
+      "Inter": "UCL/inter.png",
+      "Chelsea": "UCL/chelsea.png",
+      "Dortmund": "UCL/dortmund.png",
+      "Barcelona": "UCL/barcelona.png",
+      "Arsenal": "UCL/arsenal.png",
+      "Bayer Leverkusen": "UCL/leverkusen.png",
+      "Atlético Madrid": "UCL/atl-madrid.png",
+      "Benfica": "UCL/benfica.png",
+      "Atalanta": "UCL/atalanta.png",
+      "Villarreal": "UCL/villarreal.png",
+      "Juventus": "UCL/juventus.png",
+      "Frankfurt": "UCL/frankfurt.png",
+      "Club Brugge": "UCL/brugge.png",
+      "Tottenham": "UCL/tottenham.png",
+      "PSV Eindhoven": "UCL/psv.png",
+      "Ajax": "UCL/ajax.png",
+      "Napoli": "UCL/napoli.png",
+      "Sporting CP": "UCL/sporting.png",
+      "Olympiakos": "UCL/Olympiakos.png",
+      "Slavia Prag": "UCL/slavia prag.png",
+      "Bodø/Glimt": "UCL/bodo.png",
+      "Marsilya": "UCL/marsilya.png",
+      "Kobenhavn": "UCL/Kobenhavn.png",
+      "RB Belgrad": "UCL/belgrad.png",
+      "Monaco": "UCL/monaco.png",
+      "Ferencvaros": "UCL/Ferencvaros.png",
+      "Galatasaray": "UCL/GS.png",
+      "Celtic": "UCL/celtic.png",
+      "USG": "UCL/usg.png",
+      "Athletic Bilbao": "UCL/athletic.png",
+      "Newcastle United": "UCL/newcastle.png"
+    };
+    const pots = {
+      "pot1": [
+        { team: "PSG", country: "Fransa" },
+        { team: "Real Madrid", country: "İspanya" },
+        { team: "Manchester City", country: "İngiltere" },
+        { team: "Bayern Münih", country: "Almanya" },
+        { team: "Liverpool", country: "İngiltere" },
+        { team: "Inter", country: "İtalya" },
+        { team: "Chelsea", country: "İngiltere" },
+        { team: "Dortmund", country: "Almanya" },
+        { team: "Barcelona", country: "İspanya" }
+      ],
+      "pot2": [
+        { team: "Arsenal", country: "İngiltere" },
+        { team: "Bayer Leverkusen", country: "Almanya" },
+        { team: "Atlético Madrid", country: "İspanya" },
+        { team: "Benfica", country: "Portekiz" },
+        { team: "Atalanta", country: "İtalya" },
+        { team: "Villarreal", country: "İspanya" },
+        { team: "Juventus", country: "İtalya" },
+        { team: "Frankfurt", country: "Almanya" },
+        { team: "Club Brugge", country: "Belçika" }
+      ],
+      "pot3": [
+        { team: "Tottenham", country: "İngiltere" },
+        { team: "PSV Eindhoven", country: "Hollanda" },
+        { team: "Ajax", country: "Hollanda" },
+        { team: "Napoli", country: "İtalya" },
+        { team: "Sporting CP", country: "Portekiz" },
+        { team: "Olympiakos", country: "Yunanistan" },
+        { team: "Slavia Prag", country: "Çekya" },
+        { team: "Bodø/Glimt", country: "Norveç" },
+        { team: "Marsilya", country: "Fransa" }
+      ],
+      "pot4": [
+        { team: "Kobenhavn", country: "Danimarka" },
+        { team: "RB Belgrad", country: "Sırbistan" },
+        { team: "Monaco", country: "Fransa" },
+        { team: "Ferencvaros", country: "Macaristan" },
+        { team: "Galatasaray", country: "Türkiye" },
+        { team: "Celtic", country: "İskoçya" },
+        { team: "USG", country: "Belçika" },
+        { team: "Athletic Bilbao", country: "İspanya" },
+        { team: "Newcastle United", country: "İngiltere" }
+      ]
+    };
+    let currentTeam = "";
+    let drawResults = {};
+    let fadedTeams = [];
+
+    function renderPotsTable(fadedTeams = [], selectedTeam = "") {
+      const potNames = { pot1: "1. Torba", pot2: "2. Torba", pot3: "3. Torba", pot4: "4. Torba" };
+      let html = '<div class="pots-table-row">';
+      Object.keys(pots).forEach((potKey) => {
+        html += `<div class="pot-box"><div class="pot-title">${potNames[potKey]}</div>`;
+        pots[potKey].forEach(t => {
+          let faded = fadedTeams.includes(t.team);
+          let selected = selectedTeam === t.team;
+          html += `<div class="pot-team${faded ? ' faded' : ''}${selected ? ' selected' : ''}" 
+                     onclick="selectTeam('${t.team}')">
+            ${logos[t.team] ? `<img src="${logos[t.team]}" class="pot-logo" alt="${t.team} logosu" />` : ""}
+            ${t.team}
+          </div>`;
+        });
+        html += '</div>';
+      });
+      html += '</div>';
+      document.getElementById("pots-table").innerHTML = html;
+    }
+
+    function selectTeam(team) {
+      if (fadedTeams.includes(team)) return;
+      currentTeam = team;
+      renderPotsTable(fadedTeams, team);
+      document.getElementById("matches").innerHTML = "";
+    }
+
+    function shuffle(arr) {
+      return arr.map(a=>[Math.random(),a]).sort((a,b)=>a[0]-b[0]).map(a=>a[1]);
+    }
+    function generateDraw() {
+      drawResults = {};
+      let allTeams = [].concat(...Object.values(pots));
+      allTeams.forEach(teamObj => {
+        let byPot = {};
+        Object.keys(pots).forEach(potKey => {
+          let candidates = pots[potKey].filter(t =>
+            (potKey !== getPotOfTeam(teamObj.team) ? t.country !== teamObj.country : (t.team !== teamObj.team && t.country !== teamObj.country))
+          );
+          byPot[potKey] = shuffle(candidates).slice(0, 2);
+        });
+        let matchList = [];
+        Object.keys(pots).forEach((potKey, idx) => {
+          byPot[potKey].forEach((opponent, i) => {
+            if (i === 0) {
+              matchList.push({type: "Ev Sahibi", home: teamObj.team, away: opponent.team, pot: potKey});
+            } else {
+              matchList.push({type: "Deplasman", home: opponent.team, away: teamObj.team, pot: potKey});
+            }
+          });
+        });
+        drawResults[teamObj.team] = matchList;
+      });
+    }
+    function getPotOfTeam(team) {
+      for(let p in pots) {
+        if(pots[p].some(t=>t.team===team)) return p;
+      }
+      return null;
+    }
+    let animationTimeouts = [];
+    function showMatchesAnimated(team, scrollFirst = false) {
+  clearAnimationTimeouts();
+  const container = document.getElementById("matches");
+  if (!team || !drawResults[team]) {
+    container.innerHTML = "";
+    renderPotsTable([], currentTeam);
+    return;
+  }
+  const matches = drawResults[team];
+  const faded = [team, ...matches.map(m=>m.home), ...matches.map(m=>m.away)];
+  fadedTeams = [...new Set(faded)];
+  renderPotsTable(fadedTeams, currentTeam);
+  container.innerHTML = "<h3 style='text-align:center; font-size:1.35em; color:#5af7dc; margin-bottom:10px;'>Kura Sonuçları</h3><ul class='matches-list' id='ml'></ul>";
+  const ul = document.getElementById('ml');
+  let potOrder = ["pot1", "pot2", "pot3", "pot4"];
+  let groupMap = {};
+  potOrder.forEach(pot => { groupMap[pot] = []; });
+  matches.forEach(m => { groupMap[m.pot].push(m); });
+
+  function revealPot(potIdx) {
+    if (potIdx >= potOrder.length) return;
+    let pot = potOrder[potIdx];
+    if (groupMap[pot].length > 0) {
+      const potName = { pot1: "1. Torba", pot2: "2. Torba", pot3: "3. Torba", pot4: "4. Torba" }[pot];
+      const titleLi = document.createElement("li");
+      titleLi.className = "matches-group-title";
+      titleLi.innerText = potName + " Rakipleri";
+      ul.appendChild(titleLi);
+
+      groupMap[pot].forEach((m, j) => {
+        setTimeout(() => {
+          const li = document.createElement("li");
+          li.className = "match-bubble";
+          li.innerHTML = `
+            ${logos[m.home]? `<img src="${logos[m.home]}" style="width:34px; height:34px; vertical-align:middle; background:none; border-radius:0; margin-right:12px;">`:''}
+            <span>${m.home}</span>
+            <span style="margin: 0 8px 0 8px; font-weight:600;">-</span>
+            ${logos[m.away]? `<img src="${logos[m.away]}" style="width:34px; height:34px; vertical-align:middle; background:none; border-radius:0; margin-left:12px;">`:''}
+            <span>${m.away}</span>
+          `;
+          ul.appendChild(li);
+          setTimeout(()=>li.classList.add("visible"), 20);
+
+          // --- HER BALON EKLENİNCE SCROLL ORTALA! ---
+          setTimeout(()=>{
+            container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 30);
+        }, 700*j + 50);
+      });
+    }
+    animationTimeouts.push(setTimeout(() => {
+      revealPot(potIdx+1);
+    }, 1500 + groupMap[pot].length*700));
+  }
+  revealPot(0);
+}
+    function clearAnimationTimeouts() {
+      animationTimeouts.forEach(t=>clearTimeout(t));
+      animationTimeouts = [];
+    }
+    document.getElementById('drawBtn').onclick = function() {
+      if (!currentTeam) return;
+      if (Object.keys(drawResults).length === 0) generateDraw();
+      showMatchesAnimated(currentTeam, true);
+    };
+    document.getElementById('resetBtn').onclick = function() {
+      currentTeam = "";
+      fadedTeams = [];
+      document.getElementById("matches").innerHTML = "";
+      renderPotsTable();
+    };
+    document.getElementById('homeBtn').onclick = function() {
+      window.location.href = "index.html";
+    };
+    renderPotsTable();
+    window.selectTeam = selectTeam;
+  </script>
+</body>
+</html>

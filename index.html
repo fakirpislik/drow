@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Kura Organizasyon Seçimi</title>
+  <style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: url('backgroundDark01M.png') center/cover no-repeat, linear-gradient(135deg,#082b66 0%, #154781 60%, #48c0e1 100%);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+    .org-select-container {
+      background: rgba(24,30,52,0.93);
+      box-shadow: 0 10px 32px 10px #0a0e2295;
+      border-radius: 22px;
+      padding: 40px 42px 32px 42px;
+      min-width: 360px;
+      max-width: 98vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 18px 0 0 0;
+    }
+    .select-title {
+      font-size: 1.7em;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: 0.04em;
+      text-shadow: 0 2px 18px #1b4a8570;
+      margin-bottom: 36px;
+    }
+    .org-options-row {
+      display: flex;
+      flex-direction: row;
+      gap: 34px;
+      justify-content: center;
+      width: 100%;
+    }
+    .org-card {
+      background: rgba(255,255,255,0.09);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px 3px #234a7c20;
+      padding: 24px 28px 22px 28px;
+      min-width: 160px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow 0.2s, transform 0.2s, background 0.18s;
+      cursor: pointer;
+      position: relative;
+      border: 2.5px solid #2fe7d5;
+      font-size: 1.13em;
+      font-weight: 500;
+      outline: none;
+      user-select: none;
+      filter: none;
+    }
+    /* Şampiyonlar Ligi - logo 150px ve border rengi */
+    .org-card.ucl {
+      border: 2.5px solid #2fe7d5;
+    }
+    .org-card.ucl .org-logo {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 14px;
+      margin-top: 2px;
+      display: block;
+      background: none;
+      border-radius: 0;
+      object-fit: contain;
+      filter: none;
+      box-shadow: none;
+    }
+    /* Avrupa Ligi turuncu vurgulu ve logo 150px */
+    .org-card.al {
+      border: 2.5px solid #ef4d07;
+      background: rgba(239,77,7,0.13);
+      color: #ffb18b;
+    }
+    .org-card.al .org-logo {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 14px;
+      margin-top: 2px;
+      display: block;
+      background: none;
+      border-radius: 0;
+      object-fit: contain;
+      filter: none;
+      box-shadow: none;
+    }
+    /* Konferans Ligi - yeşil vurgulu */
+    .org-card.cnf {
+      border: 2.5px solid #00bd13;
+      background: rgba(0,189,19,0.13);
+      color: #55f89b;
+    }
+    .org-card.cnf .org-logo {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 14px;
+      margin-top: 2px;
+      display: block;
+      background: none;
+      border-radius: 0;
+      object-fit: contain;
+      filter: none;
+      box-shadow: none;
+    }
+    /* ------ disabled kaldırıldı ------ */
+    .org-card.disabled {
+      /* background: rgba(255,255,255,0.06); */
+      /* color: #bbb; */
+      /* cursor: not-allowed; */
+      /* filter: grayscale(1) opacity(0.7); */
+      /* box-shadow: 0 2px 14px #3338; */
+    }
+    .org-card:not(.disabled):hover {
+      box-shadow: 0 4px 44px 4px #1bede570;
+      transform: translateY(-4px) scale(1.025);
+      background: #112345;
+    }
+    .org-card .coming-soon {
+      position: absolute;
+      bottom: 12px;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 0.99em;
+      color: #ef4d07;
+      letter-spacing: 0.02em;
+      opacity: 0.74;
+      font-weight: 600;
+    }
+    .org-card.cnf .coming-soon {
+      color: #00bd13;
+    }
+    @media (max-width: 600px) {
+      .org-options-row { gap: 10px; flex-direction: column; }
+      .org-card { min-width: 200px; }
+      .org-select-container { padding: 20px 4vw 16px 4vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="org-select-container">
+    <div class="select-title">KURA ÇEKMEK İSTEDİĞİN ORGANİZASYONU SEÇ</div>
+    <div class="org-options-row">
+      <!-- Şampiyonlar Ligi -->
+      <div class="org-card ucl" id="uclCard" tabindex="0">
+        <img src="CL_logo.png" class="org-logo" alt="UCL Logo" />
+        UEFA Şampiyonlar Ligi
+      </div>
+      <!-- Avrupa Ligi -->
+      <div class="org-card al" id="alCard" tabindex="0">
+        <img src="AL_logo.png" class="org-logo" alt="AL Logo" />
+        UEFA Avrupa Ligi
+      </div>
+      <!-- Konferans Ligi -->
+      <div class="org-card cnf" id="cnfCard" tabindex="0">
+        <img src="CNF_logo.png" class="org-logo" alt="CNF Logo" />
+        UEFA Konferans Ligi
+      </div>
+    </div>
+  </div>
+  <script>
+    // Tıklanınca yönlendirme
+    document.getElementById('uclCard').onclick = function() {
+      window.location.href = "ucl_kura.html";
+    };
+    document.getElementById('uclCard').onkeypress = function(e) {
+      if(e.key === "Enter" || e.key === " ") {
+        window.location.href = "ucl_kura.html";
+      }
+    };
+    document.getElementById('alCard').onclick = function() {
+      window.location.href = "avr_kura.html";
+    };
+    document.getElementById('alCard').onkeypress = function(e) {
+      if(e.key === "Enter" || e.key === " ") {
+        window.location.href = "avr_kura.html";
+      }
+    };
+    document.getElementById('cnfCard').onclick = function() {
+      window.location.href = "konf_kura.html";
+    };
+    document.getElementById('cnfCard').onkeypress = function(e) {
+      if(e.key === "Enter" || e.key === " ") {
+        window.location.href = "konf_kura.html";
+      }
+    };
+  </script>
+</body>
+</html>
